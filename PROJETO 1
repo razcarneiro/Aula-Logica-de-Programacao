@@ -1,0 +1,17 @@
+# Ccondicionais - if elif else
+'''
+Eae Joanatan, bora dar uma saída hoje?
+Se eu terminar meu trabalho  aqui eu consigo;.
+'''
+trabalho_terminado = True
+if trabalho_terminado == True:
+    print("Bora!")
+else:
+    print("Não posso sair.")
+
+    '''syntaxe
+if condição:
+    # código a ser executado se a condição for verdadeira
+elif outra_condição:
+    # código a ser executado se a outra condição for verdadeira
+    '''

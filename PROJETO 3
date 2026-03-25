@@ -1,0 +1,11 @@
+'''
+Ei, você consegue me ajudar a mover essas vcaixas lá para
+ fora hoje a tarde?
+
+ Se eu estiver livre, sim. mas se não der, pede meu irmão para te ajudar.
+ '''
+estou_livre = input('Você está livre hoje a tarde? (s/n ) ')
+if estou_livre == 's':
+    print("Ok, bora mover as caixas!.")
+else:
+    print("Pede para o meu irmão te ajudar.")

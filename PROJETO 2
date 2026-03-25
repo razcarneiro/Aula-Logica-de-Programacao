@@ -1,0 +1,22 @@
+'''
+    Eu cheguei atrasado na aula, ainda posso entrar?
+    
+    Se for a sua primeira ou segunda ver que você chega atrasado, pode sim.
+    Mas se for a terceira vez, você será suspenso.
+    '''
+
+atrasos = int(input("Quantas vezes você já chegou atrasado?"))
+if atrasos == 0:
+    print("Ótimo, você é um aluno exemplar.")
+if atrasos == 1:
+    print("Ótimo, pode entrar.")
+if atrasos == 2:
+    print("Pode entrar mas tente chegar no horário da próxima vez, se não você será suspenso!.")
+elif atrasos == 3:
+    print("Infelizmente, você será suspenso por chegar atrasado.")
+elif atrasos >= 4 and atrasos <= 9:
+    print("Infelizmente, você está suspenso por chegar atrasado tantas vezes!")
+elif atrasos == 10:
+    print("Na PRÓXIMA vez, você será expulso por chegar atrasado tantas vezes!")
+elif atrasos >= 11:
+    print("Infelizmente, você será expulso!")

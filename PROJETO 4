@@ -1,0 +1,15 @@
+#for item in range(0,101,10):
+ #   print(item)
+
+# lista de nomes
+nomes = ['Maria Idade: 28', 'Anderson Idade: 42', 'André Idade: 2036', 'Zuzu Idade: 16']
+for nome in nomes:    print(nome)
+
+
+idades = [10, 12, 16 , 18, 17, 19, 42, 32, 64, 53]
+#exiba somente as idades maiores de 18 anos na tela.
+for idade in idades:
+    if idade > 17:
+        print(f'Idade: {idade}')
+    else:
+        print(f'Idade: {idade} - menor de idade')
