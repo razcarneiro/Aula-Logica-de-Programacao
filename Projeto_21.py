@@ -365,7 +365,7 @@ def Desenhar_Linha_Horizontal():
         Linha_Atual_Horizontal.append([xis, y])
 
     
-    if any(ponto in Linhas_Horizontais for ponto in Linha_Atual_Horizontal):
+    if any(ponto in Linhas_Horizontais for ponto in Linha_Atual_Horizontal): #interseção
         Linha_Horizontal_Somar = [xis for xis in Linhas_Horizontais if xis[1] == y]
         Linha_Completa_Horizontal = Linha_Horizontal_Somar + Linha_Atual_Horizontal
         #print(Linha_Completa_Horizontal)
@@ -381,13 +381,28 @@ def Desenhar_Linha_Horizontal():
         NewXmaior = PXmaior[0]
         NewY = y
 
-        if len(Linha_Horizontal_Sem_Repetição_Final) < NewXmaior - NewXmenor:
+        if len(Linha_Horizontal_Sem_Repetição_Final) < (NewXmaior - NewXmenor + 1):
             print("Mais de 1 linha")  
         else:         
             print("Só 1 linha") 
 
-        print(f"Linha horizontal aumentada: {Linha_Horizontal_Sem_Repetição_Final}")        
+        print(f"Linha horizontal aumentada: {Linha_Horizontal_Sem_Repetição_Final}")
 
+        for testi in range(Xmenor, Xmaior + 1):
+            Linhas_Horizontais.append([testi, y])
+            print(linha_id)        
+
+
+    else: #sem interseção
+        for testi in range(Xmenor, Xmaior + 1):
+            Linhas_Horizontais.append([testi, y])
+            print(linha_id)
+        print(Linhas_Horizontais)
+        LinhaMesmoY = [p for p in Linhas_Horizontais if p[1] == y]
+        if len(LinhaMesmoY) < (max(p[0] for p in LinhaMesmoY)- min(p[0] for p in LinhaMesmoY) + 1):
+            print("Mais de 1 linha")  
+        else:         
+            print("Só 1 linha")
 
         """
         Linha_Completa_Horizontal_Ordenada = set(Linha_Completa_Horizontal)
@@ -397,10 +412,7 @@ def Desenhar_Linha_Horizontal():
         NewXmenor = min(Linha_Completa_Horizontal, key= lambda ex: ex[0])
         NewXmaior = max(Linha_Completa_Horizontal, key= lambda ex: ex[0])
         """
-
-    for testi in range(Xmenor, Xmaior + 1):
-        Linhas_Horizontais.append([testi, y])
-        print(linha_id)    
+    
         
             
 
