@@ -397,12 +397,13 @@ def Desenhar_Linha_Horizontal():
         for testi in range(Xmenor, Xmaior + 1):
             Linhas_Horizontais.append([testi, y])
             print(linha_id)
-        print(Linhas_Horizontais)
+        print(f"Linhas_Horizontais: {Linhas_Horizontais}")
         LinhaMesmoY = [p for p in Linhas_Horizontais if p[1] == y]
         if len(LinhaMesmoY) < (max(p[0] for p in LinhaMesmoY)- min(p[0] for p in LinhaMesmoY) + 1):
             print("Mais de 1 linha")  
         else:         
             print("Só 1 linha")
+        print(f"LinhaMesmoY: {LinhaMesmoY}")    
 
         """
         Linha_Completa_Horizontal_Ordenada = set(Linha_Completa_Horizontal)
