@@ -41,6 +41,8 @@ Resistores_Já_Inseridos_P1 = []
 Resistores_Já_Inseridos_P2 = []
 
 Pontos_da_Fonte = [[1,2], [1,3], [1,4]]
+
+linha_preview_id = None
     
 
 def Inserir_Resistor():
@@ -164,6 +166,156 @@ def Inserir_Resistor():
         print(Resistores_Já_Inseridos_P2)
     except ValueError:     
         messagebox.showinfo("Erro", "Digite números válidos!")
+
+
+
+
+
+
+def Atualizar_Preview(event=None):
+    global linha_preview_id
+    
+    # Se já existir um preview na tela, apaga ele primeiro
+    if linha_preview_id is not None:
+        Tela.delete(linha_preview_id)
+        linha_preview_id = None
+
+    try:
+        horizontal = False
+        vertical = False
+        negativo = False
+        One_PontoProibido = False
+        PontoProibido = False
+        Resistor_Já_Inserido = False
+        LinhaNoMeioDoResistor = False
+        Linha_Embaixo_do_Resistor = False
+        Linha_Dentro_De_Outra = False
+        NaFonte = False
+        TamanhoResistor = False
+
+        Pontos_da_Linha.clear()
+        # Tenta ler os dados dos inputs atuais
+        x1 = int(Input_x1.get())
+        y1 = int(Input_y1.get())
+        x2 = int(Input_x2.get())
+        y2 = int(Input_y2.get())
+        
+        xpc1 = x_origem + (x1 * escala)
+        ypc1 = y_origem - (y1 * escala)
+        xpc2 = x_origem + (x2 * escala)
+        ypc2 = y_origem - (y2 * escala)
+
+
+
+        if x1 == x2:
+            vertical = True
+        if y1 == y2:
+            horizontal = True
+
+        if (x1 - x2 == 2) or (x2 - x1 == 2):
+            TamanhoResistor = True 
+
+        if x1 < 0:
+            negativo = True
+        if x2 < 0:
+            negativo = True
+        if y1 < 0:
+            negativo = True
+        if y2 < 0:
+            negativo = True
+
+        for verificador3 in PontosOcupadosMeio:
+            if ([x1, y1] == verificador3) or ([x2, y2] == verificador3):
+                One_PontoProibido = True
+
+        if One_PontoProibido == True:
+            PontoProibido = True
+        else:
+            PontoProibido = False
+
+
+        if (horizontal == True) and (vertical == False):
+            if x1 > x2:
+                Xmaior = x1
+                Xmenor = x2
+
+            if x1 < x2:
+                Xmaior = x2
+                Xmenor = x1    
+
+
+            for xis in range(Xmenor, Xmaior + 1):
+                Pontos_da_Linha.append([xis, y1])
+
+            Linha_Dentro_De_Outra = all(item in Linhas_Horizontais for item in Pontos_da_Linha)    
+
+            if any(item in PontosOcupadosMeio for item in Pontos_da_Linha):
+                LinhaNoMeioDoResistor = True    
+
+
+
+        if (horizontal == False) and (vertical == True):
+            if y1 > y2:
+                Ymaior = y1
+                Ymenor = y2
+
+            if y1 < y2:
+                Ymaior = y2
+                Ymenor = y1
+    
+
+            for yps in range(Ymenor, Ymaior + 1):
+                Pontos_da_Linha.append([x1, yps])
+
+            Linha_Dentro_De_Outra = all(item in Linhas_Verticais for item in Pontos_da_Linha)                
+
+
+            if any(item in PontosOcupadosMeio for item in Pontos_da_Linha):
+                LinhaNoMeioDoResistor = True         
+        
+
+
+
+
+
+
+        for P1, P2 in zip(Resistores_Já_Inseridos_P1, Resistores_Já_Inseridos_P2):
+            if (P1 == [x1, y1]) and (P2 == [x2, y2]):
+                Resistor_Já_Inserido = True
+                break
+
+            elif (P1 == [x2, y2]) and (P2 == [x1, y1]):
+                Resistor_Já_Inserido = True
+                break
+
+            
+
+
+        for i in range(len(Resistores_Já_Inseridos_P1)):
+            if (Resistores_Já_Inseridos_P1[i] in Pontos_da_Linha) and (Resistores_Já_Inseridos_P2[i] in Pontos_da_Linha):
+                Linha_Embaixo_do_Resistor = True
+                break
+
+
+
+        if (([x1, y1]) in Pontos_da_Fonte) or (([x2, y2]) in Pontos_da_Fonte) or (([(((x1+x2)/2)), (((y1+y2)/2))]) in Pontos_da_Fonte):
+            NaFonte = True
+
+
+        #Tela.create_oval(xpc1-3, ypc1-3, xpc1+3, ypc1+3, fill = "#67836F", outline ="#000000", width=2)
+
+
+        if ((horizontal == True) or (vertical == True)) and ((negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False)) and (TamanhoResistor == True):    
+            linha_preview_id = Tela.create_line(xpc1, ypc1, xpc2, ypc2, fill="#00FF47", width=3, dash=(60, 10))
+        elif ((horizontal == True) or (vertical == True)) and ((negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False)) and (TamanhoResistor == False):    
+            linha_preview_id = Tela.create_line(xpc1, ypc1, xpc2, ypc2, fill="#0938FF", width=3, dash=(60, 10))    
+        else:
+            linha_preview_id = Tela.create_line(xpc1, ypc1, xpc2, ypc2, fill="#FF0000", width=3, dash=(60, 10))
+
+    except ValueError:
+        pass
+
+
 
 
 def Inserir_Linha():
@@ -359,6 +511,12 @@ def Desenhar_Linha_Horizontal():
     global Linha_Horizontal_Somar, Linha_Completa_Horizontal_Ordenada 
     global Linha_Completa_Horizontal_Ordenada_Final, Linha_Horizontal_Sem_Repetição 
     global Linha_Horizontal_Sem_Repetição_Final, Lista_Guarda_H, LinhaMesmoYFinal, LinhaMesmoY2
+
+    global linha_preview_id
+    if linha_preview_id is not None:
+        Tela.delete(linha_preview_id)
+        linha_preview_id = None
+
     Lista_Guarda_H_Temp = []
     x1 = int(Input_x1.get())
     x2 = int(Input_x2.get())
@@ -566,6 +724,11 @@ def Desenhar_Linha_Vertical():
     global Linha_Completa_Vertical_Ordenada_Final, Linha_Vertical_Sem_Repetição 
     global Linha_Vertical_Sem_Repetição_Final
 
+    global linha_preview_id
+    if linha_preview_id is not None:
+        Tela.delete(linha_preview_id)
+        linha_preview_id = None
+
     x = int(Input_x1.get())
     y1 = int(Input_y1.get())
     y2 = int(Input_y2.get())
@@ -617,6 +780,11 @@ def Desenhar_Linha_Vertical():
     
 
 def Desenhar_Resistor_Horizontal():
+    global linha_preview_id
+    if linha_preview_id is not None:
+        Tela.delete(linha_preview_id)
+        linha_preview_id = None
+
     x1 = int(Input_x1.get())
     x2 = int(Input_x2.get())
     y = int(Input_y1.get())
@@ -696,6 +864,11 @@ def Desenhar_Resistor_Horizontal():
 
 
 def Desenhar_Resistor_Vertical():
+    global linha_preview_id
+    if linha_preview_id is not None:
+        Tela.delete(linha_preview_id)
+        linha_preview_id = None
+
     x = int(Input_x1.get())
     y1 = int(Input_y1.get())
     y2 = int(Input_y2.get())
@@ -767,12 +940,14 @@ Info.grid(row = 0, column = 0)
 
 Input_x1 = tk.Entry(Myframe, width = 5)
 Input_x1.grid(row = 0, column = 1)
+Input_x1.bind("<KeyRelease>", Atualizar_Preview)
 
 Info3 = tk.Label(Myframe, text = ",")
 Info3.grid(row = 0, column = 2)
 
 Input_y1 = tk.Entry(Myframe, width = 5)
 Input_y1.grid(row = 0, column = 3)
+Input_y1.bind("<KeyRelease>", Atualizar_Preview)
 
 espaço = tk.Label(Myframe, text = "           ")
 espaço.grid(row = 0, column = 4)
@@ -782,12 +957,14 @@ Info2.grid(row = 0, column = 5)
 
 Input_x2 = tk.Entry(Myframe, width = 5)
 Input_x2.grid(row = 0, column = 6)
+Input_x2.bind("<KeyRelease>", Atualizar_Preview)
 
 Info3 = tk.Label(Myframe, text = ",")
 Info3.grid(row = 0, column = 7)
 
 Input_y2 = tk.Entry(Myframe, width = 5)
 Input_y2.grid(row = 0, column = 8)
+Input_y2.bind("<KeyRelease>", Atualizar_Preview)
 
 espaço2 = tk.Label(Myframe, text = "           ")
 espaço2.grid(row = 0, column = 9)
