@@ -3,7 +3,7 @@ from tkinter import messagebox
 
 largura = 1300
 altura = 600
-escala = 40
+escala = 60
 x_origem = largura * 0.05
 y_origem = altura * 0.9
 
@@ -32,8 +32,15 @@ Linha_Completa_Vertical_Ordenada_Final = []
 Linha_Vertical_Sem_Repetição = []
 Linha_Vertical_Sem_Repetição_Final = []
 
+LinhaMesmoYFinal = []
+LinhaMesmoY2 = []
+
+Lista_Guarda_H = []
+
 Resistores_Já_Inseridos_P1 = []
-Resistores_Já_Inseridos_P2 = [] 
+Resistores_Já_Inseridos_P2 = []
+
+Pontos_da_Fonte = [[1,2], [1,3], [1,4]]
     
 
 def Inserir_Resistor():
@@ -48,6 +55,7 @@ def Inserir_Resistor():
         Resistor_Já_Inserido = False
         Resistência_Inválida = False
         Resistencia_Negativa = False
+        NaFonte = False
 
         x1 = int(Input_x1.get())
         y1 = int(Input_y1.get())
@@ -98,9 +106,12 @@ def Inserir_Resistor():
         else:                   
             Resistor_Já_Inserido = False
 
-        print(Resistor_Já_Inserido)    
+        print(Resistor_Já_Inserido)
 
-        if (horizontal == True) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False):
+        if (([x1, y1]) in Pontos_da_Fonte) or (([x2, y2]) in Pontos_da_Fonte) or (([(((x1+x2)/2)), (((y1+y2)/2))]) in Pontos_da_Fonte):
+            NaFonte = True
+
+        if (horizontal == True) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False) and (NaFonte == False):
             if (x1 - x2 == 2) or (x2 - x1 == 2):    
                 
                 Resistores_Já_Inseridos_P1.append([x1, y1])
@@ -110,7 +121,7 @@ def Inserir_Resistor():
             else:
                 messagebox.showinfo("Erro", "Tamanho inválido!")    
 
-        if (horizontal == False) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False):
+        if (horizontal == False) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False) and (NaFonte == False):
             if (y1 - y2 == 2) or (y2 - y1 == 2):    
                 
                 Resistores_Já_Inseridos_P1.append([x1, y1])
@@ -120,27 +131,30 @@ def Inserir_Resistor():
             else:
                 messagebox.showinfo("Erro", "Tamanho inválido!")
 
-        if (horizontal == True) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False):            
+        if (horizontal == True) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False) and (NaFonte == False):            
             messagebox.showinfo("Olá", "Pontos devem ser diferentes!")
 
-        if (horizontal == False) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False):            
+        if (horizontal == False) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False) and (NaFonte == False):            
             messagebox.showinfo("Erro", "Resistores devem ser estar na vertical ou horizontal!")
 
-        if (negativo == True) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False):
+        if (negativo == True) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Digite somente números positivos!")
 
-        if (PontoProibido == True) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False):
+        if (PontoProibido == True) and (Resistor_Já_Inserido == False) and (Resistência_Inválida == False) and (Resistencia_Negativa == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Resistor já inserido no local!")
 
-        if (Resistor_Já_Inserido == True) and (Resistência_Inválida == False) and (Resistencia_Negativa == False):
+        if (Resistor_Já_Inserido == True) and (Resistência_Inválida == False) and (Resistencia_Negativa == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Resistor já inserido no local, não pode!")
         
         #print(type(R))
-        if (Resistencia_Negativa == True) and (Resistência_Inválida == False):
+        if (Resistencia_Negativa == True) and (Resistência_Inválida == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Digite um valor positivo para a resistência")
 
-        if (Resistência_Inválida == True):
-            messagebox.showinfo("Erro", "Digite um valor válido (um número) para a resistência")    
+        if (Resistência_Inválida == True) and (NaFonte == False):
+            messagebox.showinfo("Erro", "Digite um valor válido (um número) para a resistência")
+
+        if (NaFonte == True):
+            messagebox.showinfo("Erro", "Resistor em cima da fonte de tensão!")         
                         
 
         print(Resistência_Inválida)
@@ -164,6 +178,7 @@ def Inserir_Linha():
         LinhaNoMeioDoResistor = False
         Linha_Embaixo_do_Resistor = False
         Linha_Dentro_De_Outra = False
+        NaFonte = False
 
         Pontos_da_Linha.clear()
 
@@ -260,6 +275,11 @@ def Inserir_Linha():
                 break
 
 
+
+        if (([x1, y1]) in Pontos_da_Fonte) or (([x2, y2]) in Pontos_da_Fonte) or (([(((x1+x2)/2)), (((y1+y2)/2))]) in Pontos_da_Fonte):
+            NaFonte = True    
+
+
         print("horizontal:", horizontal)
         print("vertical:", vertical)
         print("negativo:", negativo)
@@ -270,38 +290,41 @@ def Inserir_Linha():
 
                                         
 
-        if (horizontal == True) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):
+        if (horizontal == True) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):
             Desenhar_Linha_Horizontal()
             
 
-        if (horizontal == False) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):
+        if (horizontal == False) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):
             Desenhar_Linha_Vertical()
 
                 
 
-        if (horizontal == True) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):            
+        if (horizontal == True) and (vertical == True) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):            
             messagebox.showinfo("Olá", "Pontos devem ser diferentes!")
 
-        if (horizontal == False) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):            
+        if (horizontal == False) and (vertical == False) and (negativo == False) and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):            
             messagebox.showinfo("Erro", "Linhas devem ser estar na vertical ou horizontal!")
 
-        if (negativo == True)  and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):
+        if (negativo == True)  and (PontoProibido == False) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Digite somente números positivos!")
 
-        if (PontoProibido == True) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):
+        if (PontoProibido == True) and (Resistor_Já_Inserido == False) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Resistor já inserido no meio do local!")
 
-        if (Resistor_Já_Inserido == True) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):
+        if (Resistor_Já_Inserido == True) and (LinhaNoMeioDoResistor == False) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Resistor já inserido no local!")
 
-        if (LinhaNoMeioDoResistor == True) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False):
+        if (LinhaNoMeioDoResistor == True) and (Linha_Embaixo_do_Resistor == False) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Resistor já inserido no local, não pode!")
 
-        if (Linha_Embaixo_do_Resistor == True) and (Linha_Dentro_De_Outra == False):
+        if (Linha_Embaixo_do_Resistor == True) and (Linha_Dentro_De_Outra == False) and (NaFonte == False):
             messagebox.showinfo("Erro", "Linha abaixo de resistor, não pode!")
 
-        if (Linha_Dentro_De_Outra == True):
-            messagebox.showinfo("Erro", "Linha no mesmo local!")                
+        if (Linha_Dentro_De_Outra == True) and (NaFonte == False):
+            messagebox.showinfo("Erro", "Linha no mesmo local!")
+
+        if (NaFonte == True):
+            messagebox.showinfo("Erro", "Linha em cima da fonte de tensão!")                     
 
     except ValueError:
         messagebox.showinfo("Erro", "Digite números válidos!")        
@@ -327,12 +350,16 @@ def Limpar_Tudo():
     Linha_Completa_Horizontal_Ordenada_Final.clear()
     Linha_Horizontal_Sem_Repetição.clear()
     Linha_Horizontal_Sem_Repetição_Final.clear()
+    Lista_Guarda_H.clear()
+    LinhaMesmoYFinal.clear()
+    LinhaMesmoY2.clear()
 
 def Desenhar_Linha_Horizontal():
     global Linha_Completa_Horizontal, Linha_Atual_Horizontal 
     global Linha_Horizontal_Somar, Linha_Completa_Horizontal_Ordenada 
     global Linha_Completa_Horizontal_Ordenada_Final, Linha_Horizontal_Sem_Repetição 
-    global Linha_Horizontal_Sem_Repetição_Final
+    global Linha_Horizontal_Sem_Repetição_Final, Lista_Guarda_H, LinhaMesmoYFinal, LinhaMesmoY2
+    Lista_Guarda_H_Temp = []
     x1 = int(Input_x1.get())
     x2 = int(Input_x2.get())
     y = int(Input_y1.get())
@@ -343,29 +370,136 @@ def Desenhar_Linha_Horizontal():
     Linha_Completa_Horizontal_Ordenada_Final.clear()
     Linha_Horizontal_Sem_Repetição.clear()
     Linha_Horizontal_Sem_Repetição_Final.clear()
+    Lista_Guarda_H_Temp.clear()
+    LinhaMesmoY2.clear()
+    interseção = False
 
-    if x1 > x2:
-        Xmaior = x1
-        Xmenor = x2
-
-    if x1 < x2:
-        Xmaior = x2
-        Xmenor = x1
+    Xmenor = min(x1, x2)
+    Xmaior = max(x1, x2)
     
     xpc1 = x_origem + (x1 * escala)
     ypc = y_origem - (y * escala)
     xpc2 = x_origem + (x2 * escala)
 
+
     Tag_Linha = f"linha_{Xmenor},{y};{Xmaior},{y}"
-
-
-    
     linha_id = Tela.create_line(xpc1, ypc, xpc2, ypc, fill = "#000000", width = 3, tags = (Tag_Linha, "InseridoPorUsuario"))
+
+    while len(Lista_Guarda_H) <= y:
+        Lista_Guarda_H.append([])
+
+    PontosUsuárioLinha = [Xmenor, Xmaior]
+    Lista_Guarda_H[y].append([Xmenor, Xmaior])
+
     for xis in range(Xmenor, Xmaior + 1):
         Linha_Atual_Horizontal.append([xis, y])
 
     
     if any(ponto in Linhas_Horizontais for ponto in Linha_Atual_Horizontal): #interseção
+        interseção = True
+    #if interseção == True:
+
+
+    mudou = True
+
+    while mudou:
+        mudou = False
+        Lista_Guarda_H_Temp = [sub[:] for sub in Lista_Guarda_H]
+
+        
+        for verifica in Lista_Guarda_H_Temp[y]:
+            if verifica == PontosUsuárioLinha:
+                continue
+            if (PontosUsuárioLinha[0] <= verifica[1]) and (PontosUsuárioLinha[1] > verifica[1]):
+                Tela.delete(f"linha_{verifica[0]},{y};{verifica[1]},{y}")
+                Tela.delete(f"linha_{PontosUsuárioLinha[0]},{y};{PontosUsuárioLinha[1]},{y}")
+
+                #Lista_Guarda_H[y].remove([PontosUsuárioLinha[0], PontosUsuárioLinha[1]])
+                #Lista_Guarda_H[y].remove([verifica[0], verifica[1]])
+                if [PontosUsuárioLinha[0], PontosUsuárioLinha[1]] in Lista_Guarda_H[y]:
+                    Lista_Guarda_H[y].remove([PontosUsuárioLinha[0], PontosUsuárioLinha[1]])
+
+                if [verifica[0], verifica[1]] in Lista_Guarda_H[y]:
+                    Lista_Guarda_H[y].remove([verifica[0], verifica[1]])
+
+                if verifica[0] < PontosUsuárioLinha[0]:
+                    xpc1MaisNovo = x_origem + (verifica[0] * escala)
+                    ypc = y_origem - (y * escala)                        
+                    xpc2MaisNovo = x_origem + (PontosUsuárioLinha[1] * escala)
+
+                    Tag_Linha = f"linha_{verifica[0]},{y};{PontosUsuárioLinha[1]},{y}"
+                    linha_id = Tela.create_line(xpc1MaisNovo, ypc + 20, xpc2MaisNovo, ypc + 20, fill = "#FF0000", width = 3, tags = (Tag_Linha, "InseridoPorUsuario"))
+                    nova_linha = [verifica[0], PontosUsuárioLinha[1]]
+                    Lista_Guarda_H[y].append([verifica[0], PontosUsuárioLinha[1]])
+                else:
+                    xpc1MaisNovo = x_origem + (PontosUsuárioLinha[0] * escala)
+                    ypc = y_origem - (y * escala)
+                    xpc2MaisNovo = x_origem + (PontosUsuárioLinha[1] * escala)
+
+                    Tag_Linha = f"linha_{PontosUsuárioLinha[0]},{y};{PontosUsuárioLinha[1]},{y}"
+                    linha_id = Tela.create_line(xpc1MaisNovo, ypc + 20, xpc2MaisNovo, ypc + 20, fill = "#FF0000", width = 3, tags = (Tag_Linha, "InseridoPorUsuario"))
+                    nova_linha = [verifica[0], PontosUsuárioLinha[1]]
+                    Lista_Guarda_H[y].append([PontosUsuárioLinha[0], PontosUsuárioLinha[1]])
+                PontosUsuárioLinha = nova_linha   
+                mudou = True
+                break
+
+
+
+
+
+
+
+
+
+
+
+
+
+            elif (verifica[0] <= PontosUsuárioLinha[1]) and (verifica[1] > PontosUsuárioLinha[1]):
+                Tela.delete(f"linha_{verifica[0]},{y};{verifica[1]},{y}")
+                Tela.delete(f"linha_{PontosUsuárioLinha[0]},{y};{PontosUsuárioLinha[1]},{y}")
+
+                Lista_Guarda_H[y].remove([PontosUsuárioLinha[0], PontosUsuárioLinha[1]])                    
+                Lista_Guarda_H[y].remove([verifica[0], verifica[1]])
+
+                if verifica[0] < PontosUsuárioLinha[0]:
+                    xpc1MaisNovo = x_origem + (verifica[0] * escala)
+                    ypc = y_origem - (y * escala)
+                    xpc2MaisNovo = x_origem + (verifica[1] * escala)
+
+                    Tag_Linha = f"linha_{verifica[0]},{y};{verifica[1]},{y}"
+                    linha_id = Tela.create_line(xpc1MaisNovo, ypc + 20, xpc2MaisNovo, ypc + 20, fill = "#FF0000", width = 3, tags = (Tag_Linha, "InseridoPorUsuario"))
+                    nova_linha = [verifica[0], verifica[1]]
+                    Lista_Guarda_H[y].append([verifica[0], verifica[1]])
+                else:
+                    xpc1MaisNovo = x_origem + (PontosUsuárioLinha[0] * escala)
+                    ypc = y_origem - (y * escala)
+                    xpc2MaisNovo = x_origem + (verifica[1] * escala)
+
+                    Tag_Linha = f"linha_{PontosUsuárioLinha[0]},{y};{verifica[1]},{y}"
+                    linha_id = Tela.create_line(xpc1MaisNovo, ypc + 20, xpc2MaisNovo, ypc + 20, fill = "#FF0000", width = 3, tags = (Tag_Linha, "InseridoPorUsuario"))
+                    nova_linha = [PontosUsuárioLinha[0], verifica[1]]
+                    Lista_Guarda_H[y].append([PontosUsuárioLinha[0], verifica[1]])
+                PontosUsuárioLinha = nova_linha
+                mudou = True
+                break       
+
+
+
+
+
+                #elif
+
+
+
+
+
+
+
+
+
+
         Linha_Horizontal_Somar = [xis for xis in Linhas_Horizontais if xis[1] == y]
         Linha_Completa_Horizontal = Linha_Horizontal_Somar + Linha_Atual_Horizontal
         #print(Linha_Completa_Horizontal)
@@ -374,45 +508,53 @@ def Desenhar_Linha_Horizontal():
                 Linha_Horizontal_Sem_Repetição.append(eliminador)
         Linha_Horizontal_Sem_Repetição_Final = sorted(Linha_Horizontal_Sem_Repetição, key= lambda ex: ex[0])
 
-        PXmenor = min(Linha_Completa_Horizontal, key= lambda ex: ex[0])
-        PXmaior = max(Linha_Completa_Horizontal, key= lambda ex: ex[0])
+        if Linha_Completa_Horizontal:
+            PXmenor = min(Linha_Completa_Horizontal, key= lambda ex: ex[0])
+            PXmaior = max(Linha_Completa_Horizontal, key= lambda ex: ex[0])
 
-        NewXmenor = PXmenor[0]
-        NewXmaior = PXmaior[0]
-        NewY = y
+            NewXmenor = PXmenor[0]
+            NewXmaior = PXmaior[0]
+            NewY = y
+            #ListaNovaLinhaHorizontal[y].append([NewXmenor, NewXmaior])
 
         if len(Linha_Horizontal_Sem_Repetição_Final) < (NewXmaior - NewXmenor + 1):
             print("Mais de 1 linha")  
         else:         
-            print("Só 1 linha") 
+            print("Só 1 linha")
+          
+           
+            #New_Tag_Linha = f"linha_{NewXmenor},{y};{NewXmaior},{y}"
+            #linha_id = Tela.create_line(xpc1, ypc + 10, xpc2, ypc + 10, fill = "#4C00FF", width = 3, tags = (New_Tag_Linha, "InseridoPorUsuario"))
+            #Lista_Guarda_H[y].clear()
+            #Lista_Guarda_H[y].append([NewXmenor, NewXmaior]) 
 
         print(f"Linha horizontal aumentada: {Linha_Horizontal_Sem_Repetição_Final}")
+        
 
-        for testi in range(Xmenor, Xmaior + 1):
-            Linhas_Horizontais.append([testi, y])
-            print(linha_id)        
-
-
+    """
     else: #sem interseção
         for testi in range(Xmenor, Xmaior + 1):
             Linhas_Horizontais.append([testi, y])
             print(linha_id)
         print(f"Linhas_Horizontais: {Linhas_Horizontais}")
         LinhaMesmoY = [p for p in Linhas_Horizontais if p[1] == y]
-        if len(LinhaMesmoY) < (max(p[0] for p in LinhaMesmoY)- min(p[0] for p in LinhaMesmoY) + 1):
-            print("Mais de 1 linha")  
-        else:         
-            print("Só 1 linha")
-        print(f"LinhaMesmoY: {LinhaMesmoY}")    
+    """    
+    for testi in range(Xmenor, Xmaior + 1):
+        Linhas_Horizontais.append([testi, y])
+        print(linha_id)
+    print(f"Linhas_Horizontais: {Linhas_Horizontais}")
+    LinhaMesmoY = [p for p in Linhas_Horizontais if p[1] == y]
+    for eliminador in LinhaMesmoY:
+        if (eliminador not in LinhaMesmoY2):
+            LinhaMesmoY2.append(eliminador)
+    LinhaMesmoYFinal = sorted(LinhaMesmoY2, key= lambda ex: ex[0])
+    if len(LinhaMesmoYFinal) < (max(p[0] for p in LinhaMesmoYFinal)- min(p[0] for p in LinhaMesmoYFinal) + 1):
+        print("Mais de 1 linha")  
+    else:         
+        print("Só 1 linha")
+    print(f"LinhaMesmoY: {LinhaMesmoYFinal}")        
+    
 
-        """
-        Linha_Completa_Horizontal_Ordenada = set(Linha_Completa_Horizontal)
-        Linha_Completa_Horizontal_Ordenada_Final = list(Linha_Completa_Horizontal_Ordenada)
-        print(Linha_Completa_Horizontal_Ordenada_Final)
-
-        NewXmenor = min(Linha_Completa_Horizontal, key= lambda ex: ex[0])
-        NewXmaior = max(Linha_Completa_Horizontal, key= lambda ex: ex[0])
-        """
     
         
             
@@ -721,7 +863,29 @@ for i in range(int(x_origem), 0, int(-escala)):
     Tela.create_line(i, altura, i, 0, fill = "#CFCFCF", width = 1) #horizontal-
 
 for i in range(int(y_origem), altura, int(escala)):
-    Tela.create_line(0, i, largura, i, fill = "#CFCFCF", width = 1) #vertical-    
+    Tela.create_line(0, i, largura, i, fill = "#CFCFCF", width = 1) #vertical- 
+
+ypixel1f = y_origem - (1 * escala)
+xpixelf = x_origem + (1 * escala)
+ypixel2f = y_origem - (2.93 * escala)
+
+xtraco1pixel1f = x_origem + (0.65 * escala)
+xtraco1pixel2f = x_origem + (1.35 * escala)
+ytraco1pixelf = y_origem - (3.07 * escala)
+
+xtraco2pixel1f = x_origem + (0.8 * escala)
+xtraco2pixel2f = x_origem + (1.2 * escala)
+ytraco2pixelf = y_origem - (2.93 * escala)
+
+
+ypixel3f = y_origem - (3.07 * escala)
+ypixel4f = y_origem - (5 * escala)
+
+Tela.create_line(xpixelf, ypixel1f, xpixelf, ypixel2f, fill = "#000000", width = 3)
+Tela.create_line(xtraco1pixel1f, ytraco1pixelf, xtraco1pixel2f, ytraco1pixelf, fill = "#000000", width = 3)
+Tela.create_line(xtraco2pixel1f, ytraco2pixelf, xtraco2pixel2f, ytraco2pixelf, fill = "#000000", width = 3)
+
+Tela.create_line(xpixelf, ypixel3f, xpixelf, ypixel4f, fill = "#000000", width = 3)
 
 
 Janela.mainloop()
